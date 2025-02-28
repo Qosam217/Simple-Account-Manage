@@ -4,16 +4,11 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,27 +29,15 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class User extends BaseEntity implements UserDetails{
 
-    @Column(name="username", length=100)
-    @Size(min=2, max=100, message="Username must be between 2 - 100 character")
-    @NotBlank(message="Username must be filled")
+    @Column(name="username", length=100, nullable = false, unique = true)
     private String username;
 
-    @Column(name = "password", length=100)
-    @NotBlank(message="Password must be filled")
-    @Size(min=8, max=100, message="Password must be between 8 - 100 character")
-    @Pattern(
-        regexp = "^(?=.*[0-9])(?=.*[a-z](?=.*[A-Z])(?=.*[A-Z])(?=.*[~!@#$%^&*()\\\\-_\\+=\\\\{\\\\}\\\n" + //
-                        "\n" + //
-                        "\\[\\\\]\n" + //
-                        "\n" + //
-                        "\\\\\\\\|;:'<>,./?]).*$",
-        message="Password must contain at least one digit, one lowercase character, one uppercase character, and one special character"
-    )
+    
     private String password;
 
     @OneToOne
     @JoinColumn(name = "biodata_id", insertable = false, updatable = false)
-    @JsonManagedReference
+    @JsonBackReference
     private Biodata biodata;
 
     @Column(name = "biodata_id")
@@ -62,15 +45,14 @@ public class User extends BaseEntity implements UserDetails{
 
     @ManyToOne
     @JoinColumn(name = "role_id", insertable = false, updatable = false)
-    @JsonManagedReference
+    @JsonBackReference
     private Role role;
 
     @Column(name = "role_id")
     private Long roleId;
 
     @Column(name = "email", length = 100)
-    @NotBlank(message="Email must be filled")
-    @Email(message="Email should be valid")
+
     private String email;
 
     @Column(name = "is_locked", columnDefinition = "boolean default false")

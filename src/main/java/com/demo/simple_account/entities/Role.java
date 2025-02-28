@@ -2,14 +2,13 @@ package com.demo.simple_account.entities;
 
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,6 +27,6 @@ public class Role extends BaseEntity{
     private String name;
 
     @OneToMany(mappedBy="role")
-    @JsonBackReference
+    @JsonManagedReference
     private List<User> users;
 }
