@@ -32,7 +32,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http
                     .csrf(AbstractHttpConfigurer::disable)
-                    .authorizeHttpRequests(request -> request.anyRequest().permitAll())
+                    .authorizeHttpRequests(request -> request
+                            .requestMatchers("/api/login", "/api/register").permitAll()
+                            .anyRequest().authenticated())
                     .httpBasic(Customizer.withDefaults())
                     .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                     .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

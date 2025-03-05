@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,12 +33,15 @@ public class User extends BaseEntity implements UserDetails{
     @Column(name="username", length=100, nullable = false, unique = true)
     private String username;
 
-    
+    @Column(name="password", length=100, nullable = false, unique = true)
     private String password;
+
+    @Column(name = "email", length = 100, nullable = false, unique = true)
+    private String email;
 
     @OneToOne
     @JoinColumn(name = "biodata_id", insertable = false, updatable = false)
-    @JsonBackReference
+    @JsonManagedReference
     private Biodata biodata;
 
     @Column(name = "biodata_id")
@@ -50,10 +54,6 @@ public class User extends BaseEntity implements UserDetails{
 
     @Column(name = "role_id")
     private Long roleId;
-
-    @Column(name = "email", length = 100)
-
-    private String email;
 
     @Column(name = "is_locked", columnDefinition = "boolean default false")
     private Boolean isLocked = false;

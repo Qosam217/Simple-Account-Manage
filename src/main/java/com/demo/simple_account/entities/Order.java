@@ -1,5 +1,6 @@
 package com.demo.simple_account.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
@@ -20,7 +21,7 @@ public class Order extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "product_id", insertable = false, updatable = false)
-    @JsonManagedReference
+    @JsonBackReference
     private Product product;
 
     @Column(name = "product_id")

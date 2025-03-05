@@ -1,4 +1,4 @@
-package com.demo.simple_account.dtos;
+package com.demo.simple_account.dtos.requests;
 
 import com.demo.simple_account.validation.annotations.UniqueUsername;
 

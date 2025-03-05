@@ -2,6 +2,7 @@ package com.demo.simple_account.entities;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
@@ -36,6 +37,6 @@ public class Biodata extends BaseEntity{
     private int mobilePhone;
 
     @OneToOne(mappedBy="biodata")
-    @JsonManagedReference
+    @JsonBackReference
     private User user;
 }

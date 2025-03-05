@@ -8,7 +8,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,7 +22,6 @@ import lombok.NoArgsConstructor;
 public class Role extends BaseEntity{
 
     @Column(name="name", length=20)
-    @NotNull(message="Role Name must filled")
     private String name;
 
     @OneToMany(mappedBy="role")

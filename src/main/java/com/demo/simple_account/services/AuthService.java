@@ -23,7 +23,7 @@ public class AuthService {
         if(auth.isAuthenticated()){
             return jwtService.generateToken(user.getUsername());
         }
-        return "Failed to verify user";
+        return null;
     }
     
 }
