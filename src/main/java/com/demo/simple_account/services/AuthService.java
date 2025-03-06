@@ -1,5 +1,8 @@
 package com.demo.simple_account.services;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,13 +20,16 @@ public class AuthService {
     @Autowired
     private JWTService jwtService;
 
-        public String verify(User user){
+        public Map<String, String> verify(User user){
         Authentication auth = authManager
                 .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+        Map<String, String> token = new HashMap<>();
         if(auth.isAuthenticated()){
-            return jwtService.generateToken(user.getUsername());
+            token.put("refresh", jwtService.generateRefreshToken(user.getUsername()));
+            token.put("access", jwtService.generateAccessToken(user.getUsername()));
+            return token;
         }
-        return null;
+        return token;
     }
     
 }

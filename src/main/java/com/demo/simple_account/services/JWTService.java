@@ -10,6 +10,7 @@ import java.util.function.Function;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,12 @@ import io.jsonwebtoken.security.Keys;
 public class JWTService {
 
     private String secretKey = "";
+    
+    @Value("${jwt.access.token.expiration}")
+    private long accessTokenValidity;
+
+    @Value("${jwt.refresh.token.expiration}")
+    private long refreshTokenValidity;
 
     public JWTService(){
         try {
@@ -33,15 +40,22 @@ public class JWTService {
         }
     }
 
-    public String generateToken(String username){
+    public String generateAccessToken(String username){
+        return generateToken(username, accessTokenValidity);
+    }
 
+    public String generateRefreshToken(String username){
+        return generateToken(username, refreshTokenValidity);
+    }
+
+    public String generateToken(String username, long validity){
         Map<String, Object> claims = new HashMap<>();
         return Jwts.builder()
                     .claims()
                     .add(claims)
                     .subject(username)
                     .issuedAt(new Date(System.currentTimeMillis()))
-                    .expiration(new Date(System.currentTimeMillis() + 3600 * 30))
+                    .expiration(new Date(System.currentTimeMillis() + validity))
                     .and()
                     .signWith(getKey())
                     .compact();
